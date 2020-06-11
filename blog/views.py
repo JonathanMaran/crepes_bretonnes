@@ -2,6 +2,8 @@ from datetime import datetime
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
+
+from .forms import ContactForm
 from blog.models import Article
 
 
@@ -58,3 +60,27 @@ def addition(request, nombre1, nombre2):
 
     # retourne nombre1, nombre2 et la somme des deux au tpl
     return render(request, 'blog/addition.html', locals())
+
+
+# Formulaire
+
+def contact(request):
+    """
+    Construire le formulaire soit avec les données postées, soit vide si l'utilisateur accède pour la première fois à la page
+    """
+    form = ContactForm(request.POST or None)
+    """
+    Nous vérifions que les données envoyées sont valides. Cette méthode renvoie false s'il n'y a pas de données dans le formulaire ou qu'il contient des erreurs.
+    """
+    if form.is_valid():
+        # Ici nous pouvons traiter les données du formulaire
+        sujet = form.cleaned_data['sujet']
+        message = form.cleaned_data['message']
+        envoyeur = form.cleaned_data['envoyeur']
+        renvoi = form.cleaned_data['renvoi']
+
+        # Nous pourrions ici envoyer l'e mail grâce aux données que nous venons de récupérer
+        envoi = True
+
+    # On affiche la page du formulaire quoiqu'il arrive
+    return render(request, 'blog/contact.html', locals())
