@@ -18,6 +18,7 @@ class Article(models.Model):
     class Meta:
         ordering = ['date']
 
+    # la méthode __str__ permet d'afficher le titre de l'article dans
     def __str__(self):
         """
         Cette méthode que nosu définirons dans tous les modèles nous permettra de reconnaître facilement les différents
@@ -33,6 +34,7 @@ class Categorie(models.Model):
 
     def __str__(self):
         return self.nom
+
 
 
 # -------------------------------------
