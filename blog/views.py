@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from blog.models import Article
 
 
@@ -11,15 +11,18 @@ from blog.models import Article
 
 def accueil(request):
     # Afficher tous les articles de notre blog
-    articles = Article.objects.all()
+    articles = Article.objects.all()  # Nous récupérons tous nos articles
     return render(request, 'blog/accueil.html', {'derniers_articles': articles})
     # HttpResponse permet de retourner une réponse texte brut ou html
 
-def lire(request, id):
+
+def lire(request, id, slug):
     """
     afficher un article complet
     """
-    pass
+    article = get_object_or_404(Article, id=id, slug=slug)
+
+    return render(request, 'blog/lire.html', {'article': article})
 
 
 def view_redirection(request):
