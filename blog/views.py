@@ -3,8 +3,8 @@ from datetime import datetime
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import ContactForm
-from blog.models import Article
+from .forms import ContactForm, NouveauContactForm
+from blog.models import Article, Contact
 
 
 # Create your views here.
@@ -84,3 +84,29 @@ def contact(request):
 
     # On affiche la page du formulaire quoiqu'il arrive
     return render(request, 'blog/contact.html', locals())
+
+
+def nouveau_contact(request):
+    sauvegarde = False
+    form = NouveauContactForm(request.POST or None,
+                              request.FILES)  # request.POST => pour els donnés textuelles et request.FILES pour les fichiers comme les photos
+    if form.is_valid():
+        contact = Contact()
+        contact.nom = form.cleaned_data["nom"]
+        contact.adresse = form.cleaned_data["adresse"]
+        contact.photo = form.cleaned_data["photo"]
+        contact.save()
+        sauvegarde = True
+
+    return render(request, 'blog/nouveaucontact.html', {
+        'form': form,
+        'sauvegarde': sauvegarde
+    })
+
+
+def voir_contacts(request):
+    return render(
+        request,
+        'blog/voir_contacts.html',
+        {'contacts': Contact.objects.all()}
+    )

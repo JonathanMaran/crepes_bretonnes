@@ -35,3 +35,9 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = '__all__'
 """
+
+
+class NouveauContactForm(forms.Form):
+    nom = forms.CharField()
+    adresse = forms.CharField(widget=forms.Textarea)
+    photo = forms.ImageField()

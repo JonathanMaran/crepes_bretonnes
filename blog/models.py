@@ -36,7 +36,6 @@ class Categorie(models.Model):
         return self.nom
 
 
-
 # -------------------------------------
 # Second exemple de class/tables OneToOneField
 
@@ -82,3 +81,14 @@ class Offre(models.Model):
 
     def __str__(self):
         return "{} vendu par {}".format(self.produit, self.vendeur)
+
+
+# -----------------------------------------------------------------------------
+
+class Contact(models.Model):
+    nom = models.CharField(max_length=255)
+    adresse = models.TextField()
+    photo = models.ImageField(upload_to="photos/")
+
+    def __str__(self):
+        return self.nom
