@@ -1,3 +1,5 @@
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 # Create your models here.
@@ -101,3 +103,27 @@ class Contact(models.Model):
 class Document(models.Model):
     nom = models.CharField(max_length=100)
     doc = models.FileField(upload_to=renommage, verbose_name="Document")
+
+
+# Chapitre sur les requêtes complexes avec Q
+
+class Eleve(models.Model):
+    nom = models.CharField(max_length=31)
+    moyenne = models.IntegerField(default=10)
+    commentaires = GenericRelation('Commentaire')
+    # relation générique en sens inverse
+
+
+    def __str__(self):
+        return "Eleve {0} ({1}/20 de moyenne)".format(self.nom, self.moyenne)
+
+
+class Commentaire(models.Model):
+    auteur = models.CharField(max_length=255)
+    contenu = models.TextField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return "Commentaire de {0} sur {1}".format(self.auteur, self.content_object)
