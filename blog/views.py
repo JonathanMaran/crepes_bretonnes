@@ -2,20 +2,21 @@ from datetime import datetime
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import TemplateView, ListView, DetailView
 
 from .forms import ContactForm, NouveauContactForm
 from blog.models import Article, Contact
 
-
 # Create your views here.
 # contiendra toutes les vues de l'application
 
-
+"""
 def accueil(request):
     # Afficher tous les articles de notre blog
     articles = Article.objects.all()  # Nous récupérons tous nos articles
     return render(request, 'blog/accueil.html', {'derniers_articles': articles})
     # HttpResponse permet de retourner une réponse texte brut ou html
+"""
 
 
 def lire(request, id, slug):
@@ -110,3 +111,27 @@ def voir_contacts(request):
         'blog/voir_contacts.html',
         {'contacts': Contact.objects.all()}
     )
+
+
+# Chapitre sur les vues generiques
+# exemple de vue classique, contrairement à une vue générique qui n'est pas une fonction mais une classe
+def faq(request):
+    return render(request, 'blog/faq.html', {})
+
+
+class FAQView(TemplateView):
+    template_name = "blog/faq.html"
+
+
+class ListeArticles(ListView):
+    model = Article
+    context_object_name = "derniers_articles"
+    template_name = "blog/accueil.html"
+    paginate_by = 2
+
+    queryset = Article.objects.filter(categorie_id=1)
+
+    #def get_queryset(self):
+       # return Article.objects.filter(categorie__id=self.args[0])
+
+
