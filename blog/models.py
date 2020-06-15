@@ -85,6 +85,10 @@ class Offre(models.Model):
 
 # -----------------------------------------------------------------------------
 
+def renommage(instance, nom_fichier):
+    return "{}-{}".format(instance.id, nom_fichier)
+
+
 class Contact(models.Model):
     nom = models.CharField(max_length=255)
     adresse = models.TextField()
@@ -92,3 +96,8 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.nom
+
+
+class Document(models.Model):
+    nom = models.CharField(max_length=100)
+    doc = models.FileField(upload_to=renommage, verbose_name="Document")
