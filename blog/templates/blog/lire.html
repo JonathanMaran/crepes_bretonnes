@@ -1,3 +1,20 @@
+{% load blog_extras %}
+
 <h1>{{ article.titre }} <span class="small">dans {{article.categorie.nom }}</span></h1>
 <p class="infos">Rédigé par {{ article.auteur }}, le {{ article.date|date:"DATE_FORMAT" }}</p>
-<div class="contenu">{{ article.contenu|linebreaks }}</div>
+<div class="contenu">{{ article.contenu|linebreaks }}
+{{ "Bonjour à tous ! J'espère que votre parcours d'intégration se passe bien au sein de la crêperie !"|smart_truncate }}
+
+</div>
+<div>
+   Nous somme le {{ date_actuelle }} !
+
+</div>
+
+<br>
+
+<div>
+   Nous allons afficher un entier dans une fourchette comprise entre 1 et 100:
+   <br>
+   {% random 1 100 %}
+</div>
